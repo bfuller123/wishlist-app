@@ -57,8 +57,9 @@ body {
 /****************************************/
 
 .jumbotron {
-  margin: 13% 0 40% 0;
+  margin: 10% 0 40% 0;
   text-align: center;
+  width: 100% !important;
 }
 
 .jumbotron > h1 {

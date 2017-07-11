@@ -5,22 +5,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="css/master.css">
   <title>Wishful Thinking</title>
 </head>
 
 <body>
+  <div class="jumbotron purple-bkg">
+    <h1>Wishful Thinking</h1>
+    <h4>For those times you just aren't sure that you want the item</h4>
+    <div class="login-buttons">
+      <button class="btn btn-lg yellow-bkg" id="sign-up-button">Sign Up</button>
+      <button class="btn btn-lg gray-bkg" data-toggle="modal" data-target="#myModal" id="sign-in-button">Sign In</button>
+      <button class="btn btn-lg green-bkg" id="tour-button">Tour</button>
+    </div>
+  </div>
   <div class="container">
     <div class="row">
-      <div class="jumbotron purple-bkg col-xs-12">
-        <h1>Wishful Thinking</h1>
-        <h4>For those times you just aren't sure that you want the item</h4>
-        <div class="login-buttons">
-          <button class="btn btn-lg yellow-bkg">Sign Up</button>
-          <button class="btn btn-lg gray-bkg">Sign In</button>
-          <button class="btn btn-lg green-bkg">Tour</button>
+
+      <!-- Sign-In Modal -->
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -40,26 +62,26 @@
               </div>
             </caption>
             <!-- table for wishlist items // ready to buy -->
-              <table class="table">
-                <thead class="green-bkg">
-                  <th>#</th>
-                  <th>Item</th>
-                  <th class="item-date">Date Added</th>
-                  <th></th>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="item-number">1</td>
-                    <td class="item-name"><a target="_blank" href="https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-Alexa-Black/dp/B00X4WHP5E/ref=sr_1_1?ie=UTF8&qid=1499742737&sr=8-1&keywords=alexa">Echo</a></td>
-                    <td class="item-date">7/1/17</td>
-                    <td class="item-buttons">
-                      <button type="button" class="btn btn-sm blue-bkg">View</button>
-                      <button type="button" class="btn btn-sm yellow-bkg">Edit</button>
-                      <button type="button" class="btn btn-sm red-bkg">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <table class="table">
+              <thead class="green-bkg">
+                <th>#</th>
+                <th>Item</th>
+                <th class="item-date">Date Added</th>
+                <th></th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="item-number">1</td>
+                  <td class="item-name"><a target="_blank" href="https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-Alexa-Black/dp/B00X4WHP5E/ref=sr_1_1?ie=UTF8&qid=1499742737&sr=8-1&keywords=alexa">Echo</a></td>
+                  <td class="item-date">7/1/17</td>
+                  <td class="item-buttons">
+                    <button type="button" class="btn btn-sm blue-bkg">View</button>
+                    <button type="button" class="btn btn-sm yellow-bkg">Edit</button>
+                    <button type="button" class="btn btn-sm red-bkg">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <!-- area for money spent //  area for money saved -->
@@ -68,15 +90,15 @@
             <div class="head purple-bkg">
               <h3>&nbsp;Saved&nbsp;&nbsp;</h3>
             </div>
-              <p class="dollar-sign">$</p>
-              <h1>100</h1>
+            <p class="dollar-sign">$</p>
+            <h1>100</h1>
           </div>
           <div class="col-xs-3 spent-box">
             <div class="head red-bkg">
               <h3>&nbsp;Spent&nbsp;</h3>
             </div>
-              <p class="dollar-sign">$</p>
-              <h1>80</h1>
+            <p class="dollar-sign">$</p>
+            <h1>80</h1>
           </div>
         </div>
       </div>
@@ -124,5 +146,6 @@
   firebase.initializeApp(config);
 </script>
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </html>
