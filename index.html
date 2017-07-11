@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/master.css">
+  <title>Wishful Thinking</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="jumbotron col-xs-12">
+        <h1>Wishful Thinking</h1>
+        <h4>For those times you just aren't sure that you want the item</h4>
+        <div class="login-buttons">
+          <button class="btn btn-lg btn-primary">Sign Up</button>
+          <button class="btn btn-lg btn-primary">Sign In</button>
+          <button class="btn btn-lg btn-warning">Tour</button>
+        </div>
+      </div>
+      <div class="wishlist-area col-xs-6 col-xs-offset-1">
+        <div class="row">
+          <div class="col-xs-12 table-responsive">
+            <!-- button for wishlist and button for ready to buy -->
+            <caption class="table-title">
+                <div class="wishlist-button">
+                  <h4>Wishlist</h4>
+                </div>
+                <div class="buy-button">
+                  <h4>Ready to Buy</h4>
+                </div>
+            </caption>
+            <!-- table for wishlist items // ready to buy -->
+            <table class="table">
+              <thead>
+                <th>#</th>
+                <th>Item</th>
+                <th class="item-date">Date Added</th>
+                <th></th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="item-number">1</td>
+                  <td class="item-name"><a target="_blank" href="https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-Alexa-Black/dp/B00X4WHP5E/ref=sr_1_1?ie=UTF8&qid=1499742737&sr=8-1&keywords=alexa">Echo</a></td>
+                  <td class="item-date">7/1/17</td>
+                  <td class="item-buttons">
+                    <button type="button" class="btn btn-sm btn-success">View</button>
+                    <button type="button" class="btn btn-sm btn-warning">Edit</button>
+                    <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- area for money spent //  area for money saved -->
+        <div class="row">
+          <div class="col-xs-4">
+            <h3>Saved</h3>
+            <h1>$100</h1>
+          </div>
+          <div class="col-xs-4">
+            <h3>Spent</h3>
+            <h1>$80</h1>
+          </div>
+        </div>
+      </div>
+      <div class="add-item-area col-xs-4 col-xs-offset-1 panel">
+        <!-- form to add wishlist -->
+        <!-- input for item name, link, price -->
+        <!-- button to add -->
+        <div class="panel-heading">
+          <h4>Add Item</h4>
+        </div>
+        <form action="" class="form panel-body">
+          <div class="form-group col-xs-12">
+            <h5>Name</h5>
+            <input type="text" min-length="2" name="item" required>
+          </div>
+          <div class="form-group col-xs-12">
+            <h5>Link</h5>
+            <input type="text" name="link">
+          </div>
+          <div class="form-group col-xs-12">
+            <h5>Price</h5>
+            <input type="digits" name="price">
+          </div>
+          <button class="btn btn-primary col-xs-8 col-xs-offset-2" id="add-button">Add</button>
+        </form>
+      </div>
+      <div class="row">
+        <footer class="footer col-xs-8 col-xs-offset-2">
+          <p>Brett Fuller (c)2017</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</html>

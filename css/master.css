@@ -1,0 +1,55 @@
+.jumbotron {
+  margin: 13% 0 45% 0;
+  text-align: center;
+}
+
+.jumbotron > h1 {
+  font-size: 850%;
+}
+
+.jumbotron > h4 {
+  margin-bottom: 8%;
+}
+
+.wishlist-button, .buy-button {
+  float: left;
+  padding: 0.5% 2%;
+}
+
+.wishlist-button {
+  background-color: purple;
+}
+
+.buy-button {
+  background-color: green;
+}
+
+.item-date {
+  text-align: center;
+}
+
+.item-name {
+  width: 40%;
+}
+
+.panel {
+  text-align: center;
+}
+
+form {
+  padding: 20%;
+  border: 2px solid black;
+}
+
+form > div > input {
+  width: 100%;
+}
+
+form > button {
+  width: 250%;
+}
+
+.footer {
+  /*background-color: black;
+  color: white;*/
+}
