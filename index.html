@@ -15,32 +15,71 @@
     <h1>Wishful Thinking</h1>
     <h4>For those times you just aren't sure that you want the item</h4>
     <div class="login-buttons">
-      <button class="btn btn-lg yellow-bkg" id="sign-up-button">Sign Up</button>
-      <button class="btn btn-lg gray-bkg" data-toggle="modal" data-target="#myModal" id="sign-in-button">Sign In</button>
-      <button class="btn btn-lg green-bkg" id="tour-button">Tour</button>
+      <button class="btn btn-lg yellow-bkg" data-toggle="modal" data-target="#sign-up-modal" id="sign-up-button">Sign Up</button>
+      <button class="btn btn-lg green-bkg" data-toggle="modal" data-target="#sign-in-modal" id="sign-in-button">Sign In</button>
+      <button class="btn btn-lg gray-bkg" id="tour-button">Tour</button>
     </div>
+    <button class="btn btn-lg blue-bkg sign-out-button">Sign Out</button>
   </div>
   <div class="container">
     <div class="row">
 
-      <!-- Sign-In Modal -->
 
-      <!-- Modal -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <!-- Modals -->
+
+      <!-- sign-up-modal -->
+      <div class="modal fade" id="sign-up-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+            <div class="modal-header navy-bkg">
+              <h2 class="modal-title" id="exampleModalLabel">Sign Up</h2>
         </button>
             </div>
             <div class="modal-body">
-              ...
+              <div class="modal-group">
+                <h5>Email</h5>
+                <input type="email" placeholder="email@example.com" id="sign-up-modal-email">
+              </div>
+              <div class="modal-group">
+                <h5>Password</h5>
+                <input type="password" id="sign-up-modal-password">
+              </div>
+              <div class="modal-group retype-password">
+                <h5>Re-type Password</h5>
+                <input type="password" id="sign-up-modal-password-2">
+              </div>
+              <p id="sign-up-modal-error"></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn gray-bkg" data-dismiss="modal">Close</button>
+              <button type="button" class="btn yellow-bkg" id="modal-sign-up">Sign Up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sign-In Modal -->
+      <div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header navy-bkg">
+              <h2 class="modal-title" id="exampleModalLabel">Sign In</h2>
+        </button>
+            </div>
+            <div class="modal-body">
+              <div class="modal-group">
+                <h5>Email</h5>
+                <input type="email" placeholder="email@example.com" id="sign-in-modal-email">
+              </div>
+              <div class="modal-group">
+                <h5>Password</h5>
+                <input type="password" id="sign-in-modal-password">
+              </div>
+              <p id="sign-in-modal-error"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn gray-bkg" data-dismiss="modal">Close</button>
+              <button type="button" class="btn green-bkg" id="modal-sign-in">Sign In</button>
             </div>
           </div>
         </div>
@@ -148,4 +187,5 @@
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="scripts/main.js" charset="utf-8"></script>
 </html>

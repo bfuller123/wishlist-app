@@ -57,7 +57,7 @@ body {
 /****************************************/
 
 .jumbotron {
-  margin: 10% 0 40% 0;
+  margin: 5% 0 40% 0;
   text-align: center;
   width: 100% !important;
 }
@@ -68,6 +68,20 @@ body {
 
 .jumbotron > h4 {
   margin-bottom: 8%;
+}
+
+.jumbotron > .sign-out-button {
+  width: 30%;
+  visibility: hidden;
+}
+
+
+/****************************************/
+/*****************Modal******************/
+/****************************************/
+
+.modal-group > input {
+  width: 80%;
 }
 
 
@@ -149,7 +163,7 @@ tbody {
   left: 27%;
   top: -25%;
   z-index: 0;
-  opacity: 0.15;
+  opacity: 0.35;
 }
 
 
