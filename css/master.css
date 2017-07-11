@@ -1,5 +1,63 @@
+/**************color pallette*************
+green: #5CB7B1;
+gray: #444B54;
+red: #E26868;
+yellow: #F1BC3F;
+purple: #A06C90;
+blue: #5A9AB7;
+navy: #050F15;
+white: #ffffff;
+*****************************************/
+
+body {
+  letter-spacing: 3px;
+}
+
+/****************************************/
+/**************Backgrounds***************/
+/****************************************/
+.navy-bkg{
+  background-color: #0F3057;
+  color: #ffffff;
+}
+
+.red-bkg{
+  background-color: #E26868;
+  color: #ffffff;
+}
+
+.green-bkg{
+  background-color: #5CB7B1;
+  color: #ffffff;
+}
+
+.gray-bkg {
+  background-color: #444B54;
+  color: #ffffff;
+}
+
+.yellow-bkg {
+  background-color: #F1BC3F;
+  color: #ffffff;
+}
+
+.purple-bkg {
+  background-color: #A06C90;
+  color: #ffffff;
+}
+
+.blue-bkg {
+  background-color: #5A9AB7;
+  color: #ffffff;
+}
+
+
+/****************************************/
+/*****************Welcome****************/
+/****************************************/
+
 .jumbotron {
-  margin: 13% 0 45% 0;
+  margin: 13% 0 40% 0;
   text-align: center;
 }
 
@@ -11,17 +69,29 @@
   margin-bottom: 8%;
 }
 
+
+/*****************************************/
+/***************Page Body*****************/
+/*****************************************/
+
+.wishlist-area {
+  margin-bottom: 27%;
+}
+
+
+/**************Wishlist Table**************/
+
 .wishlist-button, .buy-button {
   float: left;
   padding: 0.5% 2%;
 }
 
-.wishlist-button {
-  background-color: purple;
+.table {
+  margin-bottom: 18%;
 }
 
-.buy-button {
-  background-color: green;
+tbody {
+  border-bottom: 2px solid gray;
 }
 
 .item-date {
@@ -32,8 +102,64 @@
   width: 40%;
 }
 
-.panel {
+
+/**********Saved // Spent************/
+
+.saved-spent-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.head {
   text-align: center;
+  width: 110%;
+  margin-left: -6.8%;
+}
+
+.head > h3 {
+  letter-spacing: 8px;
+}
+
+.spent-box > h1, .saved-box > h1 {
+  letter-spacing: 5px;
+  margin-top: -5%;
+  font-weight: bolder;
+}
+
+.saved-box, .spent-box {
+  border-radius: 8%;
+  text-align: center;
+  position: relative;
+  min-width: 150px;
+}
+
+.spent-box:hover {
+  font-weight: bolder;
+}
+
+.saved-box:hover {
+  font-weight: bolder;
+}
+
+.dollar-sign {
+  font-size: 850%;
+  position: absolute;
+  left: 27%;
+  top: -25%;
+  z-index: 0;
+  opacity: 0.15;
+}
+
+
+/************Add Item**************/
+
+.panel-heading {
+  border-radius: 0px !important;
+}
+
+.panel-body {
+  border: 3px solid #444B54;
 }
 
 form {
@@ -49,7 +175,18 @@ form > button {
   width: 250%;
 }
 
+td {
+  vertical-align: middle !important;
+}
+
+/**********************************/
+/**************Footer**************/
+/**********************************/
+
 .footer {
-  /*background-color: black;
-  color: white;*/
+  position: fixed;
+  text-align: center;
+  padding-top: 0.3%;
+  bottom: 0;
+  width: 100%;
 }
