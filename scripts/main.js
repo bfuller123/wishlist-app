@@ -1,4 +1,6 @@
 var auth = firebase.auth();
+var currentUser;
+var database = firebase.database().ref();
 
 var authenticate = {
   signUp: function(email, password) {
@@ -53,15 +55,56 @@ var authenticate = {
   }
 }
 
+var itemFunctions = {
+  addItem: function() {
+    var itemName = $('#add-item-name').val().trim();
+    var itemPrice = $('#add-item-price').val().trim();
+    var itemLink = $('#add-item-link').val().trim();
+    var d = new Date();
+    var date = d.getTime();
+    var uniqueItem = itemName + date
+    var dateAdded = moment().format('MM/DD/YYYY');
+    var thirtyDaysFromDate = moment().add(30, 'days').calendar();
+    database.child(currentUser).update({
+      [uniqueItem]:{
+        name: itemName,
+        itemPrice: itemPrice,
+        itemLink: itemLink,
+        dateAdded: dateAdded,
+        readyToBuy: thirtyDaysFromDate
+      }
+    });
+    authenticate.clearInputs();
+  },
+  addItemToTable: function(name, link, dateAdded) {
+    // TODO: adds the item to the table
+  },
+  deleteItem: function() {
+    // TODO: Make it so you can delete item from wishlist
+  },
+  loadItems: function() {
+    // TODO: load items of wishlist
+  },
+  viewItem: function() {
+    // TODO: views the items date it was added, when it is ready to buy
+  },
+  editItem: function() {
+    // TODO: so you can update price or link
+  }
+}
+
 $('#modal-sign-up').on('click', authenticate.passwordsMatch);
 $('#modal-sign-in').on('click', authenticate.signIn);
 $('.sign-out-button').on('click', authenticate.signOut);
+$('#add-button').on('click', itemFunctions.addItem);
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
+    currentUser = user.uid;
     $('.login-buttons').css('visibility', 'hidden');
     $('.sign-out-button').css('visibility', 'visible');
-  } else {
+  }
+  else {
     $('.login-buttons').css('visibility', 'visible');
     $('.sign-out-button').css('visibility', 'hidden');
   }

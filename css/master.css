@@ -176,12 +176,21 @@ tbody {
 }
 
 .panel-body {
-  border: 3px solid #444B54;
+  position: relative;
+}
+
+.panel-body:after {
+  content:"";
+  background-color: #444B54;
+  position: absolute;
+  bottom: -8em;
+  left: 0;
+  height: 11em;
+  width: .3em;
 }
 
 form {
   padding: 20%;
-  border: 2px solid black;
 }
 
 form > div > input {

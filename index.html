@@ -103,14 +103,12 @@
             <!-- table for wishlist items // ready to buy -->
             <table class="table">
               <thead class="green-bkg">
-                <th>#</th>
                 <th>Item</th>
                 <th class="item-date">Date Added</th>
                 <th></th>
               </thead>
               <tbody>
                 <tr>
-                  <td class="item-number">1</td>
                   <td class="item-name"><a target="_blank" href="https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-Alexa-Black/dp/B00X4WHP5E/ref=sr_1_1?ie=UTF8&qid=1499742737&sr=8-1&keywords=alexa">Echo</a></td>
                   <td class="item-date">7/1/17</td>
                   <td class="item-buttons">
@@ -149,20 +147,20 @@
           <h4>Add Item</h4>
         </div>
         <form action="" class="form panel-body">
-          <div class="form-group col-xs-12">
-            <h5>Name</h5>
-            <input type="text" min-length="2" name="item" required>
-          </div>
-          <div class="form-group col-xs-12">
-            <h5>Link</h5>
-            <input type="text" name="link">
-          </div>
-          <div class="form-group col-xs-12">
-            <h5>Price</h5>
-            <input type="digits" name="price">
-          </div>
-          <button class="btn btn-primary col-xs-8 col-xs-offset-2" id="add-button">Add</button>
+            <div class="form-group col-xs-12">
+              <h5>Name</h5>
+              <input type="text" min-length="2" name="item" id="add-item-name" required>
+            </div>
+            <div class="form-group col-xs-12">
+              <h5>Link</h5>
+              <input type="text" name="link" id="add-item-link">
+            </div>
+            <div class="form-group col-xs-12">
+              <h5>Price</h5>
+              <input type="digits" name="price" id="add-item-price">
+            </div>
         </form>
+        <button class="btn btn-primary col-xs-8 col-xs-offset-2" id="add-button">Add</button>
       </div>
     </div>
   </div>
@@ -187,5 +185,6 @@
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" charset="utf-8"></script>
 <script src="scripts/main.js" charset="utf-8"></script>
 </html>
