@@ -119,6 +119,11 @@ tbody {
   width: 40%;
 }
 
+.item-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
 
 /**********Saved // Spent************/
 

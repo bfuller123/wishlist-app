@@ -1,5 +1,12 @@
+// TODO: make so items can't be added without name
+// TODO: items will be separated between ready to buy and not ready
+// TODO: add to userdatabase -- wishlist, purchasedItems, deletedItems, amountsaved, amountspent
+// TODO: when item is deleted, add price to amountsaved, and add to deletedItems
+// TODO: when item is purchased, add price to amountspent, and add to purchasedItems
+
 var auth = firebase.auth();
 var currentUser;
+var userWishlist;
 var database = firebase.database().ref();
 
 var authenticate = {
@@ -63,7 +70,7 @@ var itemFunctions = {
     var d = new Date();
     var date = d.getTime();
     var uniqueItem = itemName + date
-    var dateAdded = moment().format('MM/DD/YYYY');
+    var dateAdded = moment().format('MM/DD/YY');
     var thirtyDaysFromDate = moment().add(30, 'days').calendar();
     database.child(currentUser).update({
       [uniqueItem]:{
@@ -71,19 +78,47 @@ var itemFunctions = {
         itemPrice: itemPrice,
         itemLink: itemLink,
         dateAdded: dateAdded,
-        readyToBuy: thirtyDaysFromDate
+        readyToBuy: thirtyDaysFromDate,
+        itemID: uniqueItem
       }
     });
     authenticate.clearInputs();
   },
-  addItemToTable: function(name, link, dateAdded) {
+  addItemToTable: function(name, link, dateAdded, uniqueItem) {
     // TODO: adds the item to the table
+    var newItem = $('<td class="item-name">');
+    var newDate = $('<td class="item-date">');
+    var newButtonsCell = $('<td class="item-buttons">');
+    var newLink = $('<a>');
+    var newRow = $('<tr>');
+    newLink.text(name);
+    newItem.append(newLink);
+    newLink.attr('href', link);
+    newLink.attr('target', '_blank');
+    newDate.text(dateAdded);
+    newItem.attr('data-item', uniqueItem);
+    newButtonsCell.append('<button type="button" class="btn btn-sm blue-bkg view_button" data-item="'+uniqueItem+'"> View </button>');
+    newButtonsCell.append('<button type="button" class="btn btn-sm yellow-bkg edit_button" data-item="'+uniqueItem+'"> Edit </button>');
+    newButtonsCell.append('<button type="button" class="btn btn-sm red-bkg delete_button" data-item="'+uniqueItem+'"> Delete </button>');
+    newRow.append(newItem);
+    newRow.append(newDate);
+    newRow.append(newButtonsCell);
+    $('tbody').append(newRow);
   },
   deleteItem: function() {
     // TODO: Make it so you can delete item from wishlist
   },
-  loadItems: function() {
+  loadItems: function(user) {
     // TODO: load items of wishlist
+    database.child(user).on('value', function(snapshot){
+      userWishlist = snapshot.val();
+      var itemsList = Object.keys(userWishlist);
+      $('tbody').empty();
+      for (var i = 0; i < itemsList.length; i++) {
+        var itemName = itemsList[i];
+        itemFunctions.addItemToTable(userWishlist[itemName].name, userWishlist[itemName].itemLink, userWishlist[itemName].dateAdded, userWishlist[itemName].itemID);
+      }
+    });
   },
   viewItem: function() {
     // TODO: views the items date it was added, when it is ready to buy
@@ -103,9 +138,19 @@ firebase.auth().onAuthStateChanged(function(user) {
     currentUser = user.uid;
     $('.login-buttons').css('visibility', 'hidden');
     $('.sign-out-button').css('visibility', 'visible');
+    itemFunctions.loadItems(currentUser);
   }
   else {
     $('.login-buttons').css('visibility', 'visible');
     $('.sign-out-button').css('visibility', 'hidden');
   }
 });
+
+// database.child(currentUser).on('value', function(snapshot) {
+//   itemFunctions.loadItems(currentUser);
+//   var listOfItems = Object.keys(userWishlist);
+//   for(let i = 0; i < listOfItems; i++){
+//     let item = userWishlist[listOfItems[i]];
+//     itemFunctions.addItemToTable(item.name, item.link, item.dateAdded, item.itemID);
+//   }
+// })
