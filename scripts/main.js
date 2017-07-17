@@ -1,5 +1,5 @@
 // TODO: make so items can't be added without name
-// TODO: add to userdatabase -- wishlist, purchasedItems, deletedItems, amountsaved, amountspent
+// TODO: add to userdatabase -- purchasedItems, deletedItems
 // TODO: when item is deleted, add price to amountsaved, and add to deletedItems
 // TODO: when item is purchased, add price to amountspent, and add to purchasedItems
 
@@ -16,8 +16,7 @@ var currentUser = {
     currentUser.notReadyToBuyList = [];
     currentUser.readyToBuyList = [];
     var wishlist = currentUser.fullWishlist
-    var d = new Date();
-    var date = d.getTime();
+    var date = Date.now();
     var wishlistItems = Object.keys(wishlist);
     for (var i = 0; i < wishlistItems.length; i++) {
       var currentItem = wishlistItems[i];
@@ -40,7 +39,10 @@ var authenticate = {
     });
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
+        createNewUser(user.uid);
         authenticate.clearInputs();
+        $('#sign-up-modal').modal('hide');
+        document.getElementById('wishlist-table').scrollIntoView();
       }
     })
   },
@@ -55,6 +57,8 @@ var authenticate = {
     firebase.auth().onAuthStateChanged(function(user){
       if (user) {
         authenticate.clearInputs();
+        $('#sign-in-modal').modal('hide');
+        document.getElementById('wishlist-table').scrollIntoView();
       }
     })
   },
@@ -89,20 +93,19 @@ var itemFunctions = {
     var itemName = $('#add-item-name').val().trim();
     var itemPrice = $('#add-item-price').val().trim();
     var itemLink = $('#add-item-link').val().trim();
-    var d = new Date();
-    var date = d.getTime();
-    var unix30Days = 2592000;
+    var date = Date.now();
+    var thirtyDaysMilliseconds = 2592000000;
     var uniqueItem = itemName + date
     var dateAdded = moment().format('MM/DD/YY');
     var thirtyDaysFromDate = moment().add(30, 'days').calendar();
-    database.child(currentUser.uid).update({
+    database.child(currentUser.uid).child('wishlist').update({
       [uniqueItem]:{
         name: itemName,
         itemPrice: itemPrice,
         itemLink: itemLink,
         dateAdded: dateAdded,
         readyToBuy: thirtyDaysFromDate,
-        unixReadyToBuy: date+unix30Days,
+        unixReadyToBuy: date+thirtyDaysMilliseconds,
         itemID: uniqueItem
       }
     });
@@ -133,7 +136,7 @@ var itemFunctions = {
     // TODO: Make it so you can delete item from wishlist
   },
   loadItems: function(user) {
-    database.child(user).on('value', function(snapshot){
+    database.child(user).child('wishlist').on('value', function(snapshot){
       currentUser.fullWishlist = snapshot.val();
       currentUser.sortItems();
 
@@ -171,6 +174,25 @@ var itemFunctions = {
   editItem: function() {
     // TODO: so you can update price or link
   }
+}
+
+function createNewUser(user) {
+  console.log('creating user in database');
+  database.child(user).set({
+      wishlist: {
+        'Robot001':{
+          name: 'Robot',
+          itemPrice: 0,
+          itemLink: '',
+          dateAdded: '01/01/01',
+          readyToBuy: '01/01/20',
+          unixReadyToBuy: 1577858460000,
+          itemID: 'Robot001'
+        }
+      },
+      amountSpent: 0,
+      amountSaved: 0
+  })
 }
 
 $('#modal-sign-up').on('click', authenticate.passwordsMatch);

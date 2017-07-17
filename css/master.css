@@ -190,7 +190,7 @@ tbody {
 
 .panel-body:after {
   content:"";
-  background-color: #444B54;
+  background-color: #A06C90;
   position: absolute;
   bottom: -8em;
   left: 0;
