@@ -1,13 +1,35 @@
 // TODO: make so items can't be added without name
-// TODO: items will be separated between ready to buy and not ready
 // TODO: add to userdatabase -- wishlist, purchasedItems, deletedItems, amountsaved, amountspent
 // TODO: when item is deleted, add price to amountsaved, and add to deletedItems
 // TODO: when item is purchased, add price to amountspent, and add to purchasedItems
 
 var auth = firebase.auth();
-var currentUser;
-var userWishlist;
+var viewingList = 'wishlist';
 var database = firebase.database().ref();
+
+var currentUser = {
+  uid: null,
+  fullWishlist: null,
+  notReadyToBuyList: [],
+  readyToBuyList: [],
+  sortItems: function() {
+    currentUser.notReadyToBuyList = [];
+    currentUser.readyToBuyList = [];
+    var wishlist = currentUser.fullWishlist
+    var d = new Date();
+    var date = d.getTime();
+    var wishlistItems = Object.keys(wishlist);
+    for (var i = 0; i < wishlistItems.length; i++) {
+      var currentItem = wishlistItems[i];
+      if (date > wishlist[currentItem].unixReadyToBuy) {
+        currentUser.readyToBuyList.push(wishlist[currentItem].itemID);
+      }
+      else {
+        currentUser.notReadyToBuyList.push(wishlist[currentItem].itemID);
+      }
+    }
+  }
+}
 
 var authenticate = {
   signUp: function(email, password) {
@@ -69,16 +91,18 @@ var itemFunctions = {
     var itemLink = $('#add-item-link').val().trim();
     var d = new Date();
     var date = d.getTime();
+    var unix30Days = 2592000;
     var uniqueItem = itemName + date
     var dateAdded = moment().format('MM/DD/YY');
     var thirtyDaysFromDate = moment().add(30, 'days').calendar();
-    database.child(currentUser).update({
+    database.child(currentUser.uid).update({
       [uniqueItem]:{
         name: itemName,
         itemPrice: itemPrice,
         itemLink: itemLink,
         dateAdded: dateAdded,
         readyToBuy: thirtyDaysFromDate,
+        unixReadyToBuy: date+unix30Days,
         itemID: uniqueItem
       }
     });
@@ -109,16 +133,37 @@ var itemFunctions = {
     // TODO: Make it so you can delete item from wishlist
   },
   loadItems: function(user) {
-    // TODO: load items of wishlist
     database.child(user).on('value', function(snapshot){
-      userWishlist = snapshot.val();
-      var itemsList = Object.keys(userWishlist);
-      $('tbody').empty();
-      for (var i = 0; i < itemsList.length; i++) {
-        var itemName = itemsList[i];
-        itemFunctions.addItemToTable(userWishlist[itemName].name, userWishlist[itemName].itemLink, userWishlist[itemName].dateAdded, userWishlist[itemName].itemID);
+      currentUser.fullWishlist = snapshot.val();
+      currentUser.sortItems();
+
+      if (viewingList == 'wishlist') {
+        itemFunctions.loadWishlist();
+      }
+      else {
+        itemFunctions.loadReadyToBuy();
       }
     });
+  },
+  loadWishlist: function() {
+    viewingList = 'wishlist';
+    $('tbody').empty();
+    $('thead').removeClass('gray-bkg');
+    $('thead').addClass('green-bkg');
+    for (var i = 0; i < currentUser.notReadyToBuyList.length; i++) {
+      var itemName = currentUser.notReadyToBuyList[i];
+      itemFunctions.addItemToTable(currentUser.fullWishlist[itemName].name, currentUser.fullWishlist[itemName].itemLink, currentUser.fullWishlist[itemName].dateAdded, currentUser.fullWishlist[itemName].itemID);
+    }
+  },
+  loadReadyToBuy: function() {
+    viewingList = 'buylist';
+    $('tbody').empty();
+    $('thead').removeClass('green-bkg');
+    $('thead').addClass('gray-bkg');
+    for (var i = 0; i < currentUser.readyToBuyList.length; i++) {
+      var itemName = currentUser.readyToBuyList[i];
+      itemFunctions.addItemToTable(currentUser.fullWishlist[itemName].name, currentUser.fullWishlist[itemName].itemLink, currentUser.fullWishlist[itemName].dateAdded, currentUser.fullWishlist[itemName].itemID);
+    }
   },
   viewItem: function() {
     // TODO: views the items date it was added, when it is ready to buy
@@ -132,25 +177,19 @@ $('#modal-sign-up').on('click', authenticate.passwordsMatch);
 $('#modal-sign-in').on('click', authenticate.signIn);
 $('.sign-out-button').on('click', authenticate.signOut);
 $('#add-button').on('click', itemFunctions.addItem);
+$('.wishlist-button').on('click', itemFunctions.loadWishlist);
+$('.buy-button').on('click', itemFunctions.loadReadyToBuy);
+
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    currentUser = user.uid;
+    currentUser.uid = user.uid;
     $('.login-buttons').css('visibility', 'hidden');
     $('.sign-out-button').css('visibility', 'visible');
-    itemFunctions.loadItems(currentUser);
+    itemFunctions.loadItems(currentUser.uid);
   }
   else {
     $('.login-buttons').css('visibility', 'visible');
     $('.sign-out-button').css('visibility', 'hidden');
   }
 });
-
-// database.child(currentUser).on('value', function(snapshot) {
-//   itemFunctions.loadItems(currentUser);
-//   var listOfItems = Object.keys(userWishlist);
-//   for(let i = 0; i < listOfItems; i++){
-//     let item = userWishlist[listOfItems[i]];
-//     itemFunctions.addItemToTable(item.name, item.link, item.dateAdded, item.itemID);
-//   }
-// })

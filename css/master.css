@@ -103,6 +103,10 @@ body {
   font-size: 80%;
 }
 
+.wishlist-button:focus, .buy-button:focus {
+  outline: none;
+}
+
 .table {
   margin-bottom: 18%;
 }
