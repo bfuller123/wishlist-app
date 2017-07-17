@@ -9,7 +9,19 @@ var database = firebase.database().ref();
 
 var currentUser = {
   uid: null,
-  fullWishlist: null,
+  fullWishlist: {
+    "echo":{
+      name: 'Amazon Echo',
+      dateAdded: '7/1/17',
+      itemPrice: 75,
+      itemLink: 'https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-Alexa-Black/dp/B00X4WHP5E/ref=sr_1_1?ie=UTF8&qid=1499742737&sr=8-1&keywords=alexa',
+      readyToBuy: '8/1/17',
+      unixReadyToBuy: 1498928400000+2592000000,
+      itemID: 'echo'
+    }
+  },
+  deletedItems: null,
+  purchasedItems: null,
   notReadyToBuyList: [],
   readyToBuyList: [],
   sortItems: function() {
@@ -124,8 +136,8 @@ var itemFunctions = {
     newLink.attr('target', '_blank');
     newDate.text(dateAdded);
     newItem.attr('data-item', uniqueItem);
-    newButtonsCell.append('<button type="button" class="btn btn-sm blue-bkg view_button" data-item="'+uniqueItem+'"> View </button>');
-    newButtonsCell.append('<button type="button" class="btn btn-sm yellow-bkg edit_button" data-item="'+uniqueItem+'"> Edit </button>');
+    newButtonsCell.append('<button type="button" class="btn btn-sm blue-bkg view_button" data-toggle="modal" data-target="#view-modal" data-item="'+uniqueItem+'"> View </button>');
+    newButtonsCell.append('<button type="button" class="btn btn-sm yellow-bkg edit_button" data-toggle="modal" data-target="#edit-modal" data-item="'+uniqueItem+'"> Edit </button>');
     newButtonsCell.append('<button type="button" class="btn btn-sm red-bkg delete_button" data-item="'+uniqueItem+'"> Delete </button>');
     newRow.append(newItem);
     newRow.append(newDate);
@@ -169,10 +181,21 @@ var itemFunctions = {
     }
   },
   viewItem: function() {
-    // TODO: views the items date it was added, when it is ready to buy
+    var itemName = $(this).attr('data-item');
+    var item = currentUser.fullWishlist[itemName];
+    $('#viewModalLabel').text(item.name);
+    $('#viewModalDateAdded').text(item.dateAdded);
+    $('#viewModalReadyToBuyDate').text(item.readyToBuy);
+    $('#viewModalPrice').text(item.itemPrice);
+    $('#viewModalPreview').attr('src', item.itemLink);
   },
   editItem: function() {
-    // TODO: so you can update price or link
+    var itemName = $(this).attr('data-item');
+    var item = currentUser.fullWishlist[itemName];
+    $('#editModalLabel').text(item.name);
+    $('#editModalName').val(item.name);
+    $('#editModalPrice').val(item.itemPrice);
+    $('#editModalLink').val(item.itemLink);
   }
 }
 
@@ -201,6 +224,8 @@ $('.sign-out-button').on('click', authenticate.signOut);
 $('#add-button').on('click', itemFunctions.addItem);
 $('.wishlist-button').on('click', itemFunctions.loadWishlist);
 $('.buy-button').on('click', itemFunctions.loadReadyToBuy);
+$('.view_button').on('click', itemFunctions.viewItem);
+$('.edit_button').on('click', itemFunctions.editItem);
 
 
 firebase.auth().onAuthStateChanged(function(user) {

@@ -112,15 +112,68 @@
                   <td class="item-name"><a target="_blank" href="https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-Alexa-Black/dp/B00X4WHP5E/ref=sr_1_1?ie=UTF8&qid=1499742737&sr=8-1&keywords=alexa">Echo</a></td>
                   <td class="item-date">7/1/17</td>
                   <td class="item-buttons">
-                    <button type="button" class="btn btn-sm blue-bkg">View</button>
-                    <button type="button" class="btn btn-sm yellow-bkg">Edit</button>
-                    <button type="button" class="btn btn-sm red-bkg">Delete</button>
+                    <button type="button" class="btn btn-sm blue-bkg view_button" data-toggle="modal" data-target="#view-modal" data-item="echo">View</button>
+                    <button type="button" class="btn btn-sm yellow-bkg edit_button" data-toggle="modal" data-target="#edit-modal" data-item="echo">Edit</button>
+                    <button type="button" class="btn btn-sm red-bkg delete_button">Delete</button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+
+        <!-- View Modal -->
+        <div class="modal fade" id="view-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header blue-bkg">
+                <h2 class="modal-title" id="viewModalLabel">View</h2>
+                <h5>Date Added: <span id="viewModalDateAdded"></span></h5>
+              </button>
+            </div>
+            <div class="view-modal-body modal-body">
+              <div class="view-modal-group">
+                <h4>Ready to Buy On</h4>
+                <p id="viewModalReadyToBuyDate"></p>
+                <h4>Price</h4>
+                <p>$<span id="viewModalPrice"></span></p>
+              </div>
+            </div>
+            <div class="view-modal-footer modal-footer">
+              <button type="button" class="btn gray-bkg" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Edit Modal -->
+        <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header yellow-bkg">
+                <h2 class="modal-title" id="editModalLabel">Edit</h2>
+              </button>
+            </div>
+            <div class="edit-modal-body modal-body">
+              <div class="edit-modal-group">
+                <h4>Name</h4>
+                <input type="text" class="text-input" value="" id="editModalName">
+                <h4>Price</h4>
+                <input type="number" class="text-input" value="" id="editModalPrice">
+                <h4>Link</h4>
+                <input type="text" class="text-input" value="" id="editModalLink">
+                <h4>Purchased</h4>
+                <input type="checkbox" id="editModalPurchased">
+              </div>
+            </div>
+            <div class="view-modal-footer modal-footer">
+              <button type="button" class="btn gray-bkg" data-dismiss="modal">Close</button>
+              <button type="button" class="btn yellow-bkg" data-dismiss="modal" id="editModalUpdateButton">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
         <!-- area for money spent //  area for money saved -->
         <div class="row saved-spent-area">
           <div class="col-xs-3 saved-box">
