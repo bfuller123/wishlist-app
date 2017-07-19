@@ -14,7 +14,10 @@
 <body>
   <div class="jumbotron purple-bkg">
     <h1>Wishful Thinking</h1>
-    <h4>For those times you just aren't sure that you want the item</h4>
+    <h3>Less Impulse. More Money.</h3>
+    <p>Let's face it, we all have things we need to buy. But what are the things you need to buy, and what are the things
+      you are going to regret buying? To help manage that, Wishful Thinking takes in the items you want to buy, and then has a
+      30 day cooldown period before telling you the item is ready to buy</p>
     <div class="login-buttons">
       <button class="btn btn-lg yellow-bkg" data-toggle="modal" data-target="#sign-up-modal" id="sign-up-button">Sign Up</button>
       <button class="btn btn-lg green-bkg" data-toggle="modal" data-target="#sign-in-modal" id="sign-in-button">Sign In</button>
@@ -181,14 +184,16 @@
               <h3>&nbsp;Saved&nbsp;&nbsp;</h3>
             </div>
             <p class="dollar-sign">$</p>
-            <h1>100</h1>
+            <h1 id='amountSaved'>100</h1>
+            <hr purple-bkg>
           </div>
           <div class="col-xs-3 spent-box">
             <div class="head red-bkg">
               <h3>&nbsp;Spent&nbsp;</h3>
             </div>
             <p class="dollar-sign">$</p>
-            <h1>80</h1>
+            <h1 id='amountSpent'>80</h1>
+            <hr red-bkg>
           </div>
         </div>
       </div>

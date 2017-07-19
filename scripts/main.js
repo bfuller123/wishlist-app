@@ -1,6 +1,5 @@
 // TODO: make so items can't be added without name
-// TODO: add to userdatabase -- purchasedItems, deletedItems
-// TODO: when item is deleted, add price to amountsaved, and add to deletedItems
+// TODO: Edited items update the database
 // TODO: when item is purchased, add price to amountspent, and add to purchasedItems
 
 var auth = firebase.auth();
@@ -9,25 +8,27 @@ var database = firebase.database().ref();
 
 var currentUser = {
   uid: null,
-  fullWishlist: {
+  amountSaved: 0,
+  amountSpent: 0,
+  wishlist: {
     "echo":{
       name: 'Amazon Echo',
       dateAdded: '7/1/17',
-      itemPrice: 75,
+      itemPrice: 0,
       itemLink: 'https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-Alexa-Black/dp/B00X4WHP5E/ref=sr_1_1?ie=UTF8&qid=1499742737&sr=8-1&keywords=alexa',
       readyToBuy: '8/1/17',
-      unixReadyToBuy: 1498928400000+2592000000,
+      unixReadyToBuy: 1501520400000,
       itemID: 'echo'
     }
   },
-  deletedItems: null,
-  purchasedItems: null,
+  deletedItems: Object.create(null),
+  purchasedItems: Object.create(null),
   notReadyToBuyList: [],
   readyToBuyList: [],
   sortItems: function() {
     currentUser.notReadyToBuyList = [];
     currentUser.readyToBuyList = [];
-    var wishlist = currentUser.fullWishlist
+    var wishlist = currentUser.wishlist
     var date = Date.now();
     var wishlistItems = Object.keys(wishlist);
     for (var i = 0; i < wishlistItems.length; i++) {
@@ -124,7 +125,6 @@ var itemFunctions = {
     authenticate.clearInputs();
   },
   addItemToTable: function(name, link, dateAdded, uniqueItem) {
-    // TODO: adds the item to the table
     var newItem = $('<td class="item-name">');
     var newDate = $('<td class="item-date">');
     var newButtonsCell = $('<td class="item-buttons">');
@@ -144,12 +144,19 @@ var itemFunctions = {
     newRow.append(newButtonsCell);
     $('tbody').append(newRow);
   },
-  deleteItem: function() {
-    // TODO: Make it so you can delete item from wishlist
+  loadAmountSavedAndSpent: function(user) {
+    database.child(user).child('amountSaved').on('value', function(snapshot){
+      currentUser.amountSaved = snapshot.val();
+      itemFunctions.updateSavedAndSpentOnSite();
+    });
+    database.child(user).child('amountSpent').on('value', function(snapshot){
+      currentUser.amountSpent = snapshot.val();
+      itemFunctions.updateSavedAndSpentOnSite();
+    });
   },
   loadItems: function(user) {
     database.child(user).child('wishlist').on('value', function(snapshot){
-      currentUser.fullWishlist = snapshot.val();
+      currentUser.wishlist = snapshot.val();
       currentUser.sortItems();
 
       if (viewingList == 'wishlist') {
@@ -167,7 +174,7 @@ var itemFunctions = {
     $('thead').addClass('green-bkg');
     for (var i = 0; i < currentUser.notReadyToBuyList.length; i++) {
       var itemName = currentUser.notReadyToBuyList[i];
-      itemFunctions.addItemToTable(currentUser.fullWishlist[itemName].name, currentUser.fullWishlist[itemName].itemLink, currentUser.fullWishlist[itemName].dateAdded, currentUser.fullWishlist[itemName].itemID);
+      itemFunctions.addItemToTable(currentUser.wishlist[itemName].name, currentUser.wishlist[itemName].itemLink, currentUser.wishlist[itemName].dateAdded, currentUser.wishlist[itemName].itemID);
     }
   },
   loadReadyToBuy: function() {
@@ -177,12 +184,13 @@ var itemFunctions = {
     $('thead').addClass('gray-bkg');
     for (var i = 0; i < currentUser.readyToBuyList.length; i++) {
       var itemName = currentUser.readyToBuyList[i];
-      itemFunctions.addItemToTable(currentUser.fullWishlist[itemName].name, currentUser.fullWishlist[itemName].itemLink, currentUser.fullWishlist[itemName].dateAdded, currentUser.fullWishlist[itemName].itemID);
+      itemFunctions.addItemToTable(currentUser.wishlist[itemName].name, currentUser.wishlist[itemName].itemLink, currentUser.wishlist[itemName].dateAdded, currentUser.wishlist[itemName].itemID);
     }
   },
   viewItem: function() {
+    debugger;
     var itemName = $(this).attr('data-item');
-    var item = currentUser.fullWishlist[itemName];
+    var item = currentUser.wishlist[itemName];
     $('#viewModalLabel').text(item.name);
     $('#viewModalDateAdded').text(item.dateAdded);
     $('#viewModalReadyToBuyDate').text(item.readyToBuy);
@@ -190,12 +198,42 @@ var itemFunctions = {
     $('#viewModalPreview').attr('src', item.itemLink);
   },
   editItem: function() {
+    debugger;
     var itemName = $(this).attr('data-item');
-    var item = currentUser.fullWishlist[itemName];
+    var item = currentUser.wishlist[itemName];
     $('#editModalLabel').text(item.name);
     $('#editModalName').val(item.name);
     $('#editModalPrice').val(item.itemPrice);
+    $('#editModalPrice').attr('data-item', itemName);
     $('#editModalLink').val(item.itemLink);
+  },
+  deleteItem: function() {
+    debugger;
+    var itemName = $(this).attr('data-item');
+    var itemToMove = currentUser.wishlist[itemName];
+    currentUser.deletedItems[itemName] = itemToMove;
+    console.log(itemToMove.itemPrice);
+    delete currentUser.wishlist[itemName];
+    itemFunctions.addPrice(itemToMove.itemPrice, 'amountSaved');
+    itemFunctions.updateList('wishlist');
+    itemFunctions.updateList('deletedItems');
+  },
+  addPrice: function(price, listToAddTo) {
+    currentUser[listToAddTo] = parseFloat(currentUser[listToAddTo]) + parseFloat(price);
+    console.log(typeof currentUser[listToAddTo], currentUser[listToAddTo]);
+    database.child(currentUser.uid).update({
+      [listToAddTo]: currentUser[listToAddTo]
+    });
+    itemFunctions.updateSavedAndSpentOnSite();
+  },
+  updateList: function(listToUpdate) {
+    database.child(currentUser.uid).update({
+      [listToUpdate]: currentUser[listToUpdate]
+    });
+  },
+  updateSavedAndSpentOnSite: function() {
+    $('#amountSaved').text(currentUser.amountSaved);
+    $('#amountSpent').text(currentUser.amountSpent);
   }
 }
 
@@ -224,8 +262,9 @@ $('.sign-out-button').on('click', authenticate.signOut);
 $('#add-button').on('click', itemFunctions.addItem);
 $('.wishlist-button').on('click', itemFunctions.loadWishlist);
 $('.buy-button').on('click', itemFunctions.loadReadyToBuy);
-$('.view_button').on('click', itemFunctions.viewItem);
-$('.edit_button').on('click', itemFunctions.editItem);
+$('tbody').on('click', '.view_button', itemFunctions.viewItem);
+$('tbody').on('click', '.edit_button', itemFunctions.editItem);
+$('tbody').on('click', '.delete_button', itemFunctions.deleteItem);
 
 
 firebase.auth().onAuthStateChanged(function(user) {
@@ -234,6 +273,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     $('.login-buttons').css('visibility', 'hidden');
     $('.sign-out-button').css('visibility', 'visible');
     itemFunctions.loadItems(currentUser.uid);
+    itemFunctions.loadAmountSavedAndSpent(currentUser.uid);
   }
   else {
     $('.login-buttons').css('visibility', 'visible');

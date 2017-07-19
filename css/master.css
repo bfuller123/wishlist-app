@@ -64,10 +64,16 @@ body {
 
 .jumbotron > h1 {
   font-size: 850%;
+  letter-spacing: 10px;
 }
 
-.jumbotron > h4 {
-  margin-bottom: 8%;
+.jumbotron > h3 {
+  letter-spacing: 15px;
+}
+
+.jumbotron > p {
+  margin: 2% 10% 8% 10%;
+  font-size: 110%;
 }
 
 .jumbotron > .sign-out-button {
@@ -184,12 +190,22 @@ tbody {
   min-width: 150px;
 }
 
-.spent-box:hover {
-  font-weight: bolder;
+.spent-box > hr, .saved-box > hr {
+  visibility: hidden;
 }
 
-.saved-box:hover {
-  font-weight: bolder;
+.spent-box:hover > hr {
+  visibility: visible;
+  width: 75%;
+  height: 2px;
+  background-color: #E26868;
+}
+
+.saved-box:hover > hr {
+  visibility: visible;
+  width: 75%;
+  height: 2px;
+  background-color: #A06C90;
 }
 
 .dollar-sign {
