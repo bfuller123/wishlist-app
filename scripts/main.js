@@ -6,6 +6,43 @@ var auth = firebase.auth();
 var viewingList = 'wishlist';
 var database = firebase.database().ref();
 
+var dummyUser = {
+  uid: null,
+  amountSaved: 100,
+  amountSpent: 37,
+  wishlist: {
+    "echo":{
+      name: 'Amazon Echo',
+      dateAdded: '7/1/17',
+      itemPrice: 0,
+      itemLink: 'https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-Alexa-Black/dp/B00X4WHP5E/ref=sr_1_1?ie=UTF8&qid=1499742737&sr=8-1&keywords=alexa',
+      readyToBuy: '8/1/17',
+      unixReadyToBuy: 1501520400000,
+      itemID: 'echo'
+    }
+  },
+  deletedItems: Object.create(null),
+  purchasedItems: Object.create(null),
+  notReadyToBuyList: ["echo"],
+  readyToBuyList: [],
+  sortItems: function() {
+    currentUser.notReadyToBuyList = [];
+    currentUser.readyToBuyList = [];
+    var wishlist = currentUser.wishlist
+    var date = Date.now();
+    var wishlistItems = Object.keys(wishlist);
+    for (var i = 0; i < wishlistItems.length; i++) {
+      var currentItem = wishlistItems[i];
+      if (date > wishlist[currentItem].unixReadyToBuy) {
+        currentUser.readyToBuyList.push(wishlist[currentItem].itemID);
+      }
+      else {
+        currentUser.notReadyToBuyList.push(wishlist[currentItem].itemID);
+      }
+    }
+  }
+}
+
 var currentUser = {
   uid: null,
   amountSaved: 0,
@@ -78,6 +115,8 @@ var authenticate = {
   signOut: function() {
     auth.signOut().then(function() {
       console.log('Successful sign out');
+      currentUser = null;
+      loadDummyInfo();
     }).catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -104,7 +143,7 @@ var authenticate = {
 var itemFunctions = {
   addItem: function() {
     var itemName = $('#add-item-name').val().trim();
-    var itemPrice = $('#add-item-price').val().trim();
+    var itemPrice = parseFloat($('#add-item-price').val().trim()) || 0;
     var itemLink = $('#add-item-link').val().trim();
     var date = Date.now();
     var thirtyDaysMilliseconds = 2592000000;
@@ -188,7 +227,6 @@ var itemFunctions = {
     }
   },
   viewItem: function() {
-    debugger;
     var itemName = $(this).attr('data-item');
     var item = currentUser.wishlist[itemName];
     $('#viewModalLabel').text(item.name);
@@ -198,7 +236,6 @@ var itemFunctions = {
     $('#viewModalPreview').attr('src', item.itemLink);
   },
   editItem: function() {
-    debugger;
     var itemName = $(this).attr('data-item');
     var item = currentUser.wishlist[itemName];
     $('#editModalLabel').text(item.name);
@@ -208,11 +245,9 @@ var itemFunctions = {
     $('#editModalLink').val(item.itemLink);
   },
   deleteItem: function() {
-    debugger;
     var itemName = $(this).attr('data-item');
     var itemToMove = currentUser.wishlist[itemName];
     currentUser.deletedItems[itemName] = itemToMove;
-    console.log(itemToMove.itemPrice);
     delete currentUser.wishlist[itemName];
     itemFunctions.addPrice(itemToMove.itemPrice, 'amountSaved');
     itemFunctions.updateList('wishlist');
@@ -220,7 +255,6 @@ var itemFunctions = {
   },
   addPrice: function(price, listToAddTo) {
     currentUser[listToAddTo] = parseFloat(currentUser[listToAddTo]) + parseFloat(price);
-    console.log(typeof currentUser[listToAddTo], currentUser[listToAddTo]);
     database.child(currentUser.uid).update({
       [listToAddTo]: currentUser[listToAddTo]
     });
@@ -256,6 +290,13 @@ function createNewUser(user) {
   })
 }
 
+function loadDummyInfo() {
+  currentUser = dummyUser;
+  console.log(currentUser);
+  itemFunctions.loadWishlist();
+  itemFunctions.updateSavedAndSpentOnSite();
+}
+
 $('#modal-sign-up').on('click', authenticate.passwordsMatch);
 $('#modal-sign-in').on('click', authenticate.signIn);
 $('.sign-out-button').on('click', authenticate.signOut);
@@ -270,6 +311,7 @@ $('tbody').on('click', '.delete_button', itemFunctions.deleteItem);
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     currentUser.uid = user.uid;
+    $('tbody').empty();
     $('.login-buttons').css('visibility', 'hidden');
     $('.sign-out-button').css('visibility', 'visible');
     itemFunctions.loadItems(currentUser.uid);
