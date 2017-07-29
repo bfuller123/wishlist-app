@@ -142,6 +142,7 @@ var authenticate = {
 
 var itemFunctions = {
   addItem: function() {
+    ga('send', 'event', 'wishlist', 'add item');
     var itemName = $('#add-item-name').val().trim();
     var itemPrice = parseFloat($('#add-item-price').val().trim()) || 0;
     var itemLink = $('#add-item-link').val().trim();
@@ -245,6 +246,7 @@ var itemFunctions = {
     $('#editModalLink').val(item.itemLink);
   },
   deleteItem: function() {
+    ga('send', 'event', 'wishlist', 'delete item');
     var itemName = $(this).attr('data-item');
     var itemToMove = currentUser.wishlist[itemName];
     currentUser.deletedItems[itemName] = itemToMove;
