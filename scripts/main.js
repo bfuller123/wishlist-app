@@ -1,5 +1,4 @@
 // TODO: make so items can't be added without name
-// TODO: Edited items update the database
 // TODO: when item is purchased, add price to amountspent, and add to purchasedItems
 
 var auth = firebase.auth();
@@ -270,6 +269,14 @@ var itemFunctions = {
   updateSavedAndSpentOnSite: function() {
     $('#amountSaved').text(currentUser.amountSaved);
     $('#amountSpent').text(currentUser.amountSpent);
+  },
+  updateItem: function() {
+    var itemName = $('#editModalPrice').attr('data-item');
+    var item = currentUser.wishlist[itemName];
+    item.name = $('#editModalName').val();
+    item.itemPrice = $('#editModalPrice').val();
+    item.itemLink = $('#editModalLink').val();
+    itemFunctions.updateList('wishlist');
   }
 }
 
@@ -308,6 +315,7 @@ $('.buy-button').on('click', itemFunctions.loadReadyToBuy);
 $('tbody').on('click', '.view_button', itemFunctions.viewItem);
 $('tbody').on('click', '.edit_button', itemFunctions.editItem);
 $('tbody').on('click', '.delete_button', itemFunctions.deleteItem);
+$('#editModalUpdateButton').on('click', itemFunctions.updateItem);
 
 
 firebase.auth().onAuthStateChanged(function(user) {
