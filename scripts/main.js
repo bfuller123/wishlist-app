@@ -277,6 +277,13 @@ var itemFunctions = {
     item.itemPrice = $('#editModalPrice').val();
     item.itemLink = $('#editModalLink').val();
     itemFunctions.updateList('wishlist');
+    if(document.getElementById('editModalPurchased').checked){
+      currentUser.purchasedItems[itemName] = item;
+      delete currentUser.wishlist[itemName];
+      itemFunctions.addPrice(item.itemPrice, 'amountSpent');
+      itemFunctions.updateList('wishlist');
+      itemFunctions.updateList('purchasedItems');
+    }
   }
 }
 
