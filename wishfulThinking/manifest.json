@@ -1,0 +1,29 @@
+{
+
+  "manifest_version": 2,
+  "name": "Wishful Thinking",
+  "version": "1.0",
+
+  "description": "Allows you to add item on page to your wishful thinking list",
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.amazon.com/*"],
+      "js": ["wt_extension.js"]
+    }
+  ],
+
+  "permissions": [
+    "activeTab"
+  ],
+
+  "browser_action": {
+    "default_icon": "w-logo.gif",
+    "default_title": "Wishful Thinking",
+    "default_popup": "popup/wishful_thinking.html"
+  },
+
+  "icons": {
+    "48": "w-logo.gif"
+  }
+}

@@ -139,6 +139,7 @@ var authenticate = {
   }
 }
 
+//functions for items and their manipulation
 var itemFunctions = {
   addItem: function() {
     ga('send', 'event', 'wishlist', 'add item');
@@ -192,6 +193,11 @@ var itemFunctions = {
       currentUser.amountSpent = snapshot.val();
       itemFunctions.updateSavedAndSpentOnSite();
     });
+  },
+  loadDelOrPurchasedItems: function(user, list) {
+    database.child(user).child(list).on('value', function(snapshot){
+      currentUser[list] = snapshot.val();
+    })
   },
   loadItems: function(user) {
     database.child(user).child('wishlist').on('value', function(snapshot){
@@ -333,6 +339,8 @@ firebase.auth().onAuthStateChanged(function(user) {
     $('.sign-out-button').css('visibility', 'visible');
     itemFunctions.loadItems(currentUser.uid);
     itemFunctions.loadAmountSavedAndSpent(currentUser.uid);
+    itemFunctions.loadDelOrPurchasedItems(currentUser.uid, 'deletedItems');
+    itemFunctions.loadDelOrPurchasedItems(currentUser.uid, 'purchasedItems');
   }
   else {
     $('.login-buttons').css('visibility', 'visible');
